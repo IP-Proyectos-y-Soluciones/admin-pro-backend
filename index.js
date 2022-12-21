@@ -15,16 +15,8 @@ app.use( cors() );
 dbConnection();
 
 //Rutas
-app.get( '/', ( req, res ) => {
-  
-  res.json(
-    {
-    ok: true,
-    msg: 'Hola Mundo',
-    }
-  );
+app.use( '/api/usuarios', require( './routes/usuarios' ) );
 
-} );
 
 
 //Ejecutar el servidor
