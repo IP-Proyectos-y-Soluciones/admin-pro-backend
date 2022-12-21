@@ -12,7 +12,7 @@ npm-debug.log
 yarn-error.log
 
 # Variables de Entorno
-/.env
+.env-ejemplo
 
 # IDEs and editors
 .idea/
@@ -43,3 +43,5 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+/.env-ejemplo
