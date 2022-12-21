@@ -11,6 +11,9 @@ const app = express();
 //Configurar CORS
 app.use( cors() );
 
+//Lectura y parseo del Json
+app.use( express.json() );
+
 // Conexión BD
 dbConnection();
 
