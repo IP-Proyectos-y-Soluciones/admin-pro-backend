@@ -1,7 +1,11 @@
 const express = require( 'express' );
+const { dbConnection } = require( './database/config' );
 
 //Crear Servidor express
 const app = express();
+
+// Conexión BD
+dbConnection();
 
 //Rutas
 app.get( '/', ( req, res ) => {
