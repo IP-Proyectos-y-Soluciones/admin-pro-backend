@@ -1,5 +1,6 @@
 const { Schema, model } = require( 'mongoose' );
 
+// Creación de Usuario
 // @ts-ignore
 const UsuarioSchema = Schema( {
   name: {
