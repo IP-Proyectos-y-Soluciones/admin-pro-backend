@@ -100,7 +100,7 @@ const actualizarUsuario = async ( req, res = response ) => {
     if ( usuarioDB.email !== email ) {
 
       const existeEmail = await Usuario.findOne( { email } );
-      
+
       if ( existeEmail ) {
         return res.status( 400 ).json( {
           ok: false,
@@ -130,5 +130,46 @@ const actualizarUsuario = async ( req, res = response ) => {
   }
 };
 
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ */
+const borrarUsuario = async ( req, res = response ) => {
+  
+  const uid = req.params.id;
 
-module.exports = { getUsuarios, createUser, actualizarUsuario, };
+
+  try {
+    
+    // Validar si el usuario existe
+    const usuarioDB = await Usuario.findById( uid );
+
+    if ( !usuarioDB ) {
+      return res.status( 404 ).json( {
+        ok: false,
+        msg: 'No existe el usuario con ese id.',
+      } );
+    }
+
+    await Usuario.findByIdAndDelete( uid );
+
+    res.json( {
+      ok: true,
+      msg: 'Usuario eliminado correctamente...',
+    } );
+
+  } catch (error) {
+    
+    console.error( error );
+
+    res.status( 500 ).json( {
+      ok: false,
+      msg: 'Error inesperado... revisar logs',
+    } );
+
+  }
+};
+
+
+module.exports = { getUsuarios, createUser, actualizarUsuario, borrarUsuario, };
