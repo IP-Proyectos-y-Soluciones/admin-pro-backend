@@ -71,5 +71,65 @@ const createUser = async( req, res = response ) => {
    
 };
 
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ */
+const actualizarUsuario = async ( req, res = response ) => {
 
-module.exports = { getUsuarios, createUser, };
+  // TODO: Validar Token y comprobar si el usuario es el correcto
+  
+  const uid = req.params.id;
+
+  try {
+    
+    // Validar si el usuario existe
+    const usuarioDB = await Usuario.findById( uid );
+
+    if ( !usuarioDB ) {
+      return res.status( 404 ).json( {
+        ok: false,
+        msg: 'No existe el usuario con ese id.',
+      } );
+    }
+
+    // Actualizacion el usuario
+    const campos = req.body;
+
+    if ( usuarioDB.email === req.body.email ) {
+      delete campos.email;
+    } else {
+      const existeEmail = await Usuario.findOne( { email: req.body.email } );
+      if ( existeEmail ) {
+        return res.status( 400 ).json( {
+          ok: false,
+          msg: 'Ya existe un usuario con ese email.',
+        } );
+      }
+    }
+
+    delete campos.password;
+    delete campos.google;
+
+    const usuarioActualizado = await Usuario.findByIdAndUpdate( uid, campos, { new: true } );
+
+    res.json( {
+      ok: true,
+      usuario: usuarioActualizado,
+    } );
+    
+  } catch (error) {
+    
+    console.error( error );
+
+    res.status( 500 ).json( {
+      ok: false,
+      msg: 'Error inesperado... revisar logs',
+    } );
+
+  }
+};
+
+
+module.exports = { getUsuarios, createUser, actualizarUsuario, };
