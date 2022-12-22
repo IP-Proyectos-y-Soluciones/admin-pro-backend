@@ -18,6 +18,7 @@ const getUsuarios = async( req, res ) => {
     {
       ok: true,
       usuarios,
+      // uid: req.uid,
     }
   );
 };
