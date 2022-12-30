@@ -21,6 +21,9 @@ router.get( '/',
 router.post( '/',
   [
     // Validación de campos obligatorios
+    validarJWT,
+    check( 'name', 'El nombre del Hospital es necesario' ).not().isEmpty(),
+    validarCampos,
   ],
   crearHospitales
 );
