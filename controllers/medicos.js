@@ -2,15 +2,29 @@ const { response } = require( 'express' );
 
 const Medico = require( '../models/medico' );
 
-const getMedicos = ( req, res = response ) => { 
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ */
+const getMedicos = async ( req, res = response ) => { 
+
+  const medicos = await Medico.find()
+    .populate( 'usuario', 'name img' )
+    .populate( 'hospital', 'name img' );
 
   res.json( {
     ok: true,
-    msg: 'getMedicos',
+    medicos,
   } );
 
 };
 
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ */
 const crearMedico = async ( req, res = response ) => { 
 
   const uid = req.uid;
