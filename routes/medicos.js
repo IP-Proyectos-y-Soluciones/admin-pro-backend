@@ -7,34 +7,33 @@ const { Router } = require( 'express' );
 const { check } = require( 'express-validator' );
 const { validarCampos } = require( '../middlewares/validar-campos' );
 
-const { getMedicos, crearMedico, actualizarMedico, borrarMedico, } = require( '../controllers/medicos' );
+const { getMedicos, crearMedico, actualizarMedico, borrarMedico } = require( '../controllers/medicos' );
 
 const { validarJWT } = require( '../middlewares/validar-jwt' );
 
-
 const router = Router();
 
-router.get( '/',
-  getMedicos
-);
+router.get( '/', getMedicos );
 
-router.post( '/',
+router.post(
+  '/',
   [
     // Validación de campos obligatorios
+    validarJWT,
+    check( 'name', 'El nombre del Médico es Obligatorio' ).notEmpty(),
+    validarCampos,
   ],
   crearMedico
 );
 
-router.put( '/:id',
+router.put(
+  '/:id',
   [
     // Validar campos que se van actualizar
   ],
   actualizarMedico
 );
 
-router.delete( '/:id',
-  borrarMedico
-);
+router.delete( '/:id', borrarMedico );
 
-
-module.exports = router;
+  module.exports = router;

@@ -1,5 +1,7 @@
 const { response } = require( 'express' );
 
+const Medico = require( '../models/medico' );
+
 const getMedicos = ( req, res = response ) => { 
 
   res.json( {
@@ -9,12 +11,30 @@ const getMedicos = ( req, res = response ) => {
 
 };
 
-const crearMedico = ( req, res = response ) => { 
+const crearMedico = async ( req, res = response ) => { 
 
-  res.json( {
-    ok: true,
-    msg: 'crearMedicos',
+  const uid = req.uid;
+  const medico = new Medico( {
+    usuario: uid,
+    ...req.body,
   } );
+
+  try {
+
+    const medicoDB = await medico.save();
+    
+    res.json( {
+      ok: true,
+      Medico: medicoDB,
+    } );
+  } catch (error) {
+    console.error( error );
+    res.status( 500 ).json( {
+      ok: false,
+      msg: 'Oops... algo salio mal. Comuniquese con el administrador del sistema.',
+    } );
+  }
+
   
 };
 
