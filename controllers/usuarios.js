@@ -12,12 +12,30 @@ const { generarJWT } = require( '../helpers/jwt' );
  */
 const getUsuarios = async( req, res ) => {
 
-  const usuarios = await Usuario.find( {}, 'name email role google' );
+  const from = Number( req.query.from ) || 0;
+  // console.log( from );
+
+  // const usuarios = await Usuario
+  //   .find( {}, 'name email role google' )
+  //   .skip( from )
+  //   .limit( 5 );
+  
+  // const total = await Usuario.count();
+
+  const [ usuarios, total ] = await Promise.all( [
+    Usuario
+      .find( {}, 'name email role google' )
+      .skip( from )
+      .limit( 5 ),
+
+    Usuario.count(),
+  ] );
 
   res.json(
     {
       ok: true,
       usuarios,
+      total,
       // uid: req.uid,
     }
   );
@@ -37,7 +55,7 @@ const createUser = async( req, res = response ) => {
   try {
     
     // Validación de email
-    const existeEmail = await Usuario.findOne( { email } );
+    const existeEmail = await Usuario.findOne( { email, } );
 
     if ( existeEmail ) {
       return res.status( 404 ).json( {
@@ -107,7 +125,7 @@ const actualizarUsuario = async ( req, res = response ) => {
 
     if ( usuarioDB.email !== email ) {
 
-      const existeEmail = await Usuario.findOne( { email } );
+      const existeEmail = await Usuario.findOne( { email, } );
 
       if ( existeEmail ) {
         return res.status( 400 ).json( {
@@ -119,7 +137,7 @@ const actualizarUsuario = async ( req, res = response ) => {
 
     campos.email = email;
 
-    const usuarioActualizado = await Usuario.findByIdAndUpdate( uid, campos, { new: true } );
+    const usuarioActualizado = await Usuario.findByIdAndUpdate( uid, campos, { new: true, } );
 
     res.json( {
       ok: true,
