@@ -21,6 +21,7 @@ router.post(
     // Validación de campos obligatorios
     validarJWT,
     check( 'name', 'El nombre del Médico es Obligatorio' ).notEmpty(),
+    check( 'hospital', 'El hospital id debe ser valido' ).isMongoId(),
     validarCampos,
   ],
   crearMedico
@@ -36,4 +37,4 @@ router.put(
 
 router.delete( '/:id', borrarMedico );
 
-  module.exports = router;
+module.exports = router;
