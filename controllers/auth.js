@@ -69,6 +69,7 @@ const login = async ( req, res = response ) => {
 const googleSignIn = async ( req, res = response ) => { 
 
   try {
+    // @ts-ignore
     const { email, name, picture, } = await googleVerify( req.body.token );
 
     const usuarioDB = await Usuario.findOne( { email, } );
