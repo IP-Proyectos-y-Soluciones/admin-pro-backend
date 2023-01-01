@@ -52,21 +52,95 @@ const crearMedico = async ( req, res = response ) => {
   
 };
 
-const actualizarMedico = ( req, res = response ) => { 
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
+const actualizarMedico = async ( req, res = response ) => { 
 
-  res.json( {
-    ok: true,
-    msg: 'actualizarMedicos',
-  } );
-  
+  const id = req.params.id;
+  const uid = req.uid;
+
+  try {
+    
+    /**
+     * Verificar si el Médico existe
+     */
+    const medico = await Medico.findById( id );
+
+    if ( !medico ) {
+      return res.status( 404 ).json( {
+        ok: false,
+        msg: 'Médico no encontrado por id.',
+      } );
+    }
+
+    /**
+     * Actualizar el registro del Médico
+     */
+    const medicoChange = {
+      ...req.body,
+      usuario: uid,
+    };
+
+    /**
+     * Guardar en la DB
+     */
+    const medicoUpdate = await Medico.findByIdAndUpdate( id, medicoChange, { new: true, } );
+
+    res.json( {
+      ok: true,
+      msg: 'Médico Actualizado correctamente!!!!',
+      hospital: medicoUpdate,
+    } );
+  } catch (error) {
+    console.error( error );
+
+    res.status( 500 ).json( {
+      ok: false,
+      msg: 'Oops... Ocurrio un error inesperado.  Consulte con el Administrador del sistema.',
+    } );
+  }
+
 };
 
-const borrarMedico = ( req, res = response ) => { 
+const borrarMedico = async ( req, res = response ) => { 
 
-  res.json( {
-    ok: true,
-    msg: 'borrarMedicos',
-  } );
+  const id = req.params.id;
+
+  try {
+    
+    /**
+     * Verificar si el Médico existe
+     */
+    const medico = await Medico.findById( id );
+
+    if ( !medico ) {
+      return res.status( 404 ).json( {
+        ok: false,
+        msg: 'Médico no encontrado por id.',
+      } );
+    }
+
+    /**
+     * Eliminar Médico
+     */
+    await Medico.findByIdAndDelete( id );
+
+    res.json( {
+      ok: true,
+      msg: 'Médico Eliminado correctamente.',
+    } );
+  } catch (error) {
+    console.error( error );
+
+    res.status( 500 ).json( {
+      ok: false,
+      msg: 'Oops... Ocurrio un error inesperado.  Consulte con el Administrador del sistema.',
+    } );
+  }
   
 };
 

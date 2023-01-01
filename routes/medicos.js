@@ -15,10 +15,11 @@ const router = Router();
 
 router.get( '/', getMedicos );
 
-router.post(
-  '/',
+router.post( '/',
   [
-    // Validación de campos obligatorios
+    /**
+     * Validación de campos obligatorios
+     */
     validarJWT,
     check( 'name', 'El nombre del Médico es Obligatorio' ).notEmpty(),
     check( 'hospital', 'El hospital id debe ser valido' ).isMongoId(),
@@ -27,14 +28,21 @@ router.post(
   crearMedico
 );
 
-router.put(
-  '/:id',
+router.put( '/:id',
   [
-    // Validar campos que se van actualizar
+    /**
+     * Validar campos que se van actualizar
+     */
+    validarJWT,
+    check( 'name', 'El nombre del Médico es Obligatorio' ).notEmpty(),
+    check( 'hospital', 'El hospital id debe ser valido' ).isMongoId(),
+    validarCampos,
   ],
   actualizarMedico
 );
 
-router.delete( '/:id', borrarMedico );
+router.delete( '/:id',
+  validarJWT,
+  borrarMedico );
 
 module.exports = router;

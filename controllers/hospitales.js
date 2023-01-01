@@ -63,11 +63,11 @@ const actualizarHospitales = async ( req, res = response ) => {
 
   try {
     
+    /**
+     * Verificar si el Hospital existe
+     */
     const hospital = await Hospital.findById( id );
 
-    /**
-     * Verificar si el hospital existe
-     */
     if ( !hospital ) {
       return res.status( 404 ).json( {
         ok: false,
@@ -103,6 +103,12 @@ const actualizarHospitales = async ( req, res = response ) => {
   }
 };
 
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
 const borrarHospitales = async ( req, res = response ) => {
   
   const id = req.params.id;
@@ -110,7 +116,7 @@ const borrarHospitales = async ( req, res = response ) => {
   try {
     
     /**
-     * Verificar si el hospital existe
+     * Verificar si el Hospital existe
      */
     const hospital = await Hospital.findById( id );
 
