@@ -103,11 +103,41 @@ const actualizarHospitales = async ( req, res = response ) => {
   }
 };
 
-const borrarHospitales = ( req, res = response ) => {
-  res.json( {
-    ok: true,
-    msg: 'borrarHospitales',
-  } );
+const borrarHospitales = async ( req, res = response ) => {
+  
+  const id = req.params.id;
+
+  try {
+    
+    /**
+     * Verificar si el hospital existe
+     */
+    const hospital = await Hospital.findById( id );
+
+    if ( !hospital ) {
+      return res.status( 404 ).json( {
+        ok: false,
+        msg: 'Hospital no encontrado por id.',
+      } );
+    }
+
+    /**
+     * Eliminar Hospital
+     */
+    await Hospital.findByIdAndDelete( id );
+
+    res.json( {
+      ok: true,
+      msg: 'Hospital Eliminado correctamente.',
+    } );
+  } catch (error) {
+    console.error( error );
+
+    res.status( 500 ).json( {
+      ok: false,
+      msg: 'Oops... Ocurrio un error inesperado.  Consulte con el Administrador del sistema.',
+    } );
+  }
 };
 
 module.exports = { getHospitales, crearHospitales, actualizarHospitales, borrarHospitales, };
