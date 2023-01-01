@@ -20,7 +20,9 @@ router.get( '/',
 
 router.post( '/',
   [
-    // Validación de campos obligatorios
+    /**
+     * Validación de campos obligatorios
+     */
     validarJWT,
     check( 'name', 'El nombre del Hospital es necesario' ).not().isEmpty(),
     validarCampos,
@@ -30,7 +32,12 @@ router.post( '/',
 
 router.put( '/:id',
   [
-    // Validar campos que se van actualizar
+    /**
+     * Validar campos que se van actualizar
+     */
+    validarJWT,
+    check( 'name', 'El nombre del Hospital es necesario' ).not().isEmpty(),
+    validarCampos,
   ],
   actualizarHospitales
 );

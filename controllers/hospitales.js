@@ -50,11 +50,57 @@ const crearHospitales = async ( req, res = response ) => {
   }
 };
 
-const actualizarHospitales = ( req, res = response ) => {
-  res.json( {
-    ok: true,
-    msg: 'actualizarHospitales',
-  } );
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
+const actualizarHospitales = async ( req, res = response ) => {
+
+  const id = req.params.id;
+  const uid = req.uid;
+
+  try {
+    
+    const hospital = await Hospital.findById( id );
+
+    /**
+     * Verificar si el hospital existe
+     */
+    if ( !hospital ) {
+      return res.status( 404 ).json( {
+        ok: false,
+        msg: 'Hospital no encontrado por id.',
+      } );
+    }
+
+    /**
+     * Actualizar el registro del Hospital
+     */
+    const hospitalChange = {
+      ...req.body,
+      usuario: uid,
+    };
+
+    /**
+     * Guardar en la DB
+     */
+    const hospitalUpdate = await Hospital.findByIdAndUpdate( id, hospitalChange, { new: true, } );
+
+    res.json( {
+      ok: true,
+      msg: 'Hospital Actualizado correctamente!!!!',
+      hospital: hospitalUpdate,
+    } );
+  } catch (error) {
+    console.error( error );
+
+    res.status( 500 ).json( {
+      ok: false,
+      msg: 'Oops... Ocurrio un error inesperado.  Consulte con el Administrador del sistema.',
+    } );
+  }
 };
 
 const borrarHospitales = ( req, res = response ) => {
