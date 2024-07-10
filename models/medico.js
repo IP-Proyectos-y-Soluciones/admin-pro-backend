@@ -1,8 +1,7 @@
-const { Schema, model } = require( 'mongoose' );
+import { Schema, model } from 'mongoose';
 
 // Creación de Medico
-// @ts-ignore
-const MedicoSchema = Schema( {
+const MedicoSchema = Schema({
   name: {
     type: String,
     required: true,
@@ -20,14 +19,12 @@ const MedicoSchema = Schema( {
     type: Schema.Types.ObjectId,
     ref: 'Hospital',
   },
-} );
+});
 
 
 MedicoSchema.method( 'toJSON', function () {
-
   const { __v, ...object } = this.toObject();
-
   return object;
-} );
+});
 
-module.exports = model( 'Medico', MedicoSchema );
+export default model( 'Medico', MedicoSchema );

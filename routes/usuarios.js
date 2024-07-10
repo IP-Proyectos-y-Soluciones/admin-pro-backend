@@ -2,12 +2,12 @@
  * Ruta: '/api/usuarios'
  */
 
-const { Router } = require( 'express' );
-const { check } = require( 'express-validator' );
-const { validarCampos } = require( '../middlewares/validar-campos' );
+import { Router } from 'express';
+import { check } from 'express-validator';
+import { validarCampos } from '../middlewares/validar-campos.js';
 
-const { getUsuarios, createUser, actualizarUsuario, borrarUsuario } = require( '../controllers/usuarios' );
-const { validarJWT } = require( '../middlewares/validar-jwt' );
+import { getUsuarios, createUser, actualizarUsuario, borrarUsuario } from '../controllers/usuarios.js';
+import { validarJWT } from '../middlewares/validar-jwt.js';
 
 
 const router = Router();
@@ -22,7 +22,8 @@ router.post( '/',
     check( 'email', 'El email es obligatorio' ).isEmail(),
     validarCampos,
   ],
-  createUser );
+  createUser 
+);
 
 router.put( '/:id',
   [
@@ -31,11 +32,12 @@ router.put( '/:id',
     check( 'name', 'El nombre es obligatorio' ).not().isEmpty(),
     check( 'email', 'El email es obligatorio' ).isEmail(),
     check( 'role', 'El role es obligatorio' ).not().isEmpty(),
-    validarCampos,
+    validarCampos, 
   ],
-  actualizarUsuario );
+  actualizarUsuario 
+);
 
   router.delete( '/:id', validarJWT, borrarUsuario );
 
 
-module.exports = router;
+  export default router;

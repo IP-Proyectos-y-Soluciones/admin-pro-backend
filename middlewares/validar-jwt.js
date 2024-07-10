@@ -1,5 +1,4 @@
-const jwt = require('jsonwebtoken');
-
+import jwt from 'jsonwebtoken';
 
 const validarJWT = ( req, res, next ) => {
 
@@ -8,16 +7,15 @@ const validarJWT = ( req, res, next ) => {
 
   // console.log( token );
   if ( !token ) {
-    return res.status( 401 ).json( {
-        ok: false,
-        msg: 'No hay token en la petición.',
-      } );
-  }
+    return res.status( 401 ).json({
+      ok: false,
+      msg: 'No hay token en la petición.',
+    });
+  };
 
 
   try {
     
-    // @ts-ignore
     const { uid } = jwt.verify( token, process.env.JWT_SECRET_KEY );
     
     // console.log( uid );
@@ -25,14 +23,13 @@ const validarJWT = ( req, res, next ) => {
     
     next();
 
-  } catch (error) {
+  } catch ( error ) {
     
-    return res.status( 401 ).json( {
+    return res.status( 401 ).json({
       ok: false,
       msg: 'Token no válido.',
-    } );
-  }
-
+    });
+  };
 };
 
-module.exports = { validarJWT, };
+export { validarJWT };

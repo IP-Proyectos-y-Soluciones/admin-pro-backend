@@ -1,8 +1,8 @@
-const { response } = require( 'express' );
-const bcrypt = require( 'bcryptjs' );
+import { response } from 'express';
+import bcrypt from 'bcryptjs';
 
-const Usuario = require( '../models/usuario' );
-const { generarJWT } = require( '../helpers/jwt' );
+import Usuario from '../models/usuario.js';
+import { generarJWT } from '../helpers/jwt.js';
 
 
 /**
@@ -22,23 +22,21 @@ const getUsuarios = async( req, res ) => {
   
   // const total = await Usuario.count();
 
-  const [ usuarios, total ] = await Promise.all( [
+  const [ usuarios, total ] = await Promise.all([
     Usuario
       .find( {}, 'name email role google img' )
       .skip( from )
       .limit( 5 ),
 
     Usuario.countDocuments(),
-  ] );
+  ]);
 
-  res.json(
-    {
-      ok: true,
-      usuarios,
-      total,
-      // uid: req.uid,
-    }
-  );
+  res.json({
+    ok: true,
+    usuarios,
+    total,
+    // uid: req.uid,
+  });
 };
 
 /**
@@ -58,11 +56,11 @@ const createUser = async( req, res = response ) => {
     const existeEmail = await Usuario.findOne( { email, } );
 
     if ( existeEmail ) {
-      return res.status( 404 ).json( {
+      return res.status( 404 ).json({
         ok: false,
         msg: 'Email ya esta registrado.',
-      } );
-    }
+      });
+    };
 
     const usuario = new Usuario( req.body );
 
@@ -77,23 +75,21 @@ const createUser = async( req, res = response ) => {
     // Generar  el TOKEN - JWT
     const token = await generarJWT( usuario.id );
 
-    res.json( {
+    res.json({
       ok: true,
       usuario,
       token,
-    } );
+    });
 
   } catch ( error ) {
     
     console.error( error );
 
-    res.status( 500 ).json( {
+    res.status( 500 ).json({
       ok: false,
       msg: 'Error inesperado... revisar logs',
-    } );
-
-  }
-   
+    });
+  };
 };
 
 /**
@@ -114,11 +110,11 @@ const actualizarUsuario = async ( req, res = response ) => {
     const usuarioDB = await Usuario.findById( uid );
 
     if ( !usuarioDB ) {
-      return res.status( 404 ).json( {
+      return res.status( 404 ).json({
         ok: false,
         msg: 'No existe el usuario con ese id.',
-      } );
-    }
+      });
+    };
 
     // Actualizacion el usuario
     const { password, google, email, ...campos} = req.body;
@@ -128,32 +124,31 @@ const actualizarUsuario = async ( req, res = response ) => {
       const existeEmail = await Usuario.findOne( { email, } );
 
       if ( existeEmail ) {
-        return res.status( 400 ).json( {
+        return res.status( 400 ).json({
           ok: false,
           msg: 'Ya existe un usuario con ese email.',
-        } );
-      }
-    }
+        });
+      };
+    };
 
     campos.email = email;
 
     const usuarioActualizado = await Usuario.findByIdAndUpdate( uid, campos, { new: true, } );
 
-    res.json( {
+    res.json({
       ok: true,
       usuario: usuarioActualizado,
-    } );
+    });
     
-  } catch (error) {
+  } catch ( error ) {
     
     console.error( error );
 
-    res.status( 500 ).json( {
+    res.status( 500 ).json({
       ok: false,
       msg: 'Error inesperado... revisar logs',
-    } );
-
-  }
+    });
+  };
 };
 
 /**
@@ -173,30 +168,29 @@ const borrarUsuario = async ( req, res = response ) => {
     const usuarioDB = await Usuario.findById( uid );
 
     if ( !usuarioDB ) {
-      return res.status( 404 ).json( {
+      return res.status( 404 ).json({
         ok: false,
         msg: 'No existe el usuario con ese id.',
-      } );
-    }
+      });
+    };
 
     await Usuario.findByIdAndDelete( uid );
 
-    res.json( {
+    res.json({
       ok: true,
       msg: 'Usuario eliminado correctamente...',
-    } );
+    });
 
-  } catch (error) {
+  } catch ( error ) {
     
     console.error( error );
 
-    res.status( 500 ).json( {
+    res.status( 500 ).json({
       ok: false,
       msg: 'Error inesperado... revisar logs',
-    } );
-
-  }
+    });
+  };
 };
 
 
-module.exports = { getUsuarios, createUser, actualizarUsuario, borrarUsuario, };
+export { getUsuarios, createUser, actualizarUsuario, borrarUsuario };

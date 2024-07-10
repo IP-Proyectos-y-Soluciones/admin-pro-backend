@@ -1,9 +1,17 @@
-require( 'dotenv' ).config();
+import dotenv from 'dotenv';
+dotenv.config();
 
-const express = require( 'express' );
-const cors = require( 'cors' );
+import express from 'express';
+import cors from 'cors';
 
-const { dbConnection } = require( './database/config' );
+import { dbConnection } from './database/config.js';
+
+import usuariosRoutes from './routes/usuarios.js';
+import hospitalesRoutes from './routes/hospitales.js';
+import medicosRoutes from './routes/medicos.js';
+import busquedasRoutes from './routes/busquedas.js';
+import authRoutes from './routes/auth.js';
+import uploadsRoutes from './routes/uploads.js';
 
 /**
  * Crear Servidor express
@@ -33,16 +41,16 @@ dbConnection();
 /**
  * Rutas
  */
-app.use( '/api/usuarios', require( './routes/usuarios' ) );
-app.use( '/api/hospitales', require( './routes/hospitales' ) );
-app.use( '/api/medicos', require( './routes/medicos' ) );
-app.use( '/api/todo', require( './routes/busquedas' ) );
-app.use( '/api/login', require( './routes/auth' ) );
-app.use( '/api/upload', require( './routes/uploads' ) );
+app.use( '/api/usuarios', usuariosRoutes );
+app.use( '/api/hospitales', hospitalesRoutes );
+app.use( '/api/medicos', medicosRoutes );
+app.use( '/api/todo', busquedasRoutes );
+app.use( '/api/login', authRoutes );
+app.use( '/api/upload', uploadsRoutes );
 
-/**
+/** 
  * Ejecutar el servidor
  */
-app.listen(process.env.PORT, () => {
-  console.log( 'Servidor ejecutandose en el puerto ' + process.env.PORT );
-} );
+app.listen( process.env.PORT, () => {
+  console.log( `Servidor ejecutandose en el puerto ${ process.env.PORT }` );
+});

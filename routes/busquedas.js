@@ -3,16 +3,16 @@
  * Ruta: '/api/:search/'
  */
 
-const { Router } = require('express');
-const { validarJWT } = require( '../middlewares/validar-jwt' );
+import { Router } from 'express';
+import { validarJWT } from '../middlewares/validar-jwt.js';
 
-const { getTodo, getDocCollection } = require( '../controllers/busquedas' );
+import { getTodo, getDocCollection } from '../controllers/busquedas.js';
 
 
 const router = Router();
 
 router.get( '/:search', validarJWT, getTodo );
-router.get( '/collection/:table/:search',validarJWT, getDocCollection );
+router.get( '/collection/:table/:search', validarJWT, getDocCollection );
 
 
-module.exports = router;
+export default router;

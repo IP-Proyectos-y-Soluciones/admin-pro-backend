@@ -1,9 +1,9 @@
-const path = require( 'path' );
-const fs = require( 'fs' );
+import path from 'path';
+import fs from 'fs';
 
-const { response } = require( "express" );
-const { v4: uuidv4 } = require( 'uuid' );
-const { updateImage } = require( "../helpers/actualizar-imagen" );
+import { response } from 'express';
+import { v4 as uuidv4 } from 'uuid';
+import { updateImage } from '../helpers/actualizar-imagen.js';
 
 /**
  * 
@@ -22,21 +22,21 @@ const fileupload = ( req, res = response ) => {
   const validtypes = [ 'hospitales', 'medicos', 'usuarios', ];
 
   if ( !validtypes.includes( type ) ) {
-    return res.status( 400 ).json( {
+    return res.status( 400 ).json({
       ok: false,
       msg: 'No es un médico, usuario u Hospital (type)',
-    } );
-  }
+    });
+  };
 
   /**
    * Validar que existan archivos
    */
   if ( !req.files || Object.keys( req.files ).length === 0 ) {
-    return res.status( 400 ).json( {
+    return res.status( 400 ).json({
       ok: false,
       msg: 'Ningún archivo fue cargado',
-    } );
-  }
+    });
+  };
 
   /**
    * Procesar la imagen
@@ -52,11 +52,11 @@ const fileupload = ( req, res = response ) => {
   const validExtensions = [ 'png', 'jpg', 'jpeg', 'gif', ];
 
   if ( !validExtensions.includes( fileExtension ) ) {
-    return res.status( 400 ).json( {
+    return res.status( 400 ).json({
       ok: false,
       msg: 'No es una extensióon permitida.',
-    } );
-  }
+    });
+  };
 
   /**
    * Generar el nombre del archivo
@@ -74,24 +74,24 @@ const fileupload = ( req, res = response ) => {
   file.mv( path, ( err ) => {
     if ( err ) {
       console.error( err );
-      return res.status( 500 ).json( {
+      return res.status( 500 ).json({
         ok: false,
         msg: 'Error al mover la imagen.',
-      } );
-    }
+      });
+    };
 
     /**
      * Actualizar la DB
      */
     updateImage( type, id, fileName, );
     
-    res.json( {
+    res.json({
       ok: true,
       msg: 'Archivo cargado con exito!!',
       fileName,
-    } );
+    });
 
-  } );
+  });
 
 };
 
@@ -115,9 +115,8 @@ const returnImage = ( req, res = response ) => {
   } else {
     const pathImg = path.join( __dirname, `../uploads/no-img.jpg` );
     res.sendFile( pathImg );
-  }
-
+  };
 };
 
 
-module.exports = { fileupload, returnImage, };
+export { fileupload, returnImage };

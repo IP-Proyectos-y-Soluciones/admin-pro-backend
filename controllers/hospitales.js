@@ -1,6 +1,6 @@
-const { response } = require( 'express' );
+import { response } from 'express';
 
-const Hospital = require( '../models/hospital' );
+import Hospital from '../models/hospital.js';
 
 /**
  * 
@@ -12,10 +12,10 @@ const getHospitales = async ( req, res = response ) => {
   const hospitales = await Hospital.find()
     .populate( 'usuario', 'name img' );
 
-  res.json( {
+  res.json({
     ok: true,
     hospitales,
-  } );
+  });
 };
 
 /**
@@ -26,10 +26,10 @@ const getHospitales = async ( req, res = response ) => {
 const crearHospitales = async ( req, res = response ) => {
 
   const uid = req.uid;
-  const hospital = new Hospital( {
+  const hospital = new Hospital({
     usuario: uid,
     ...req.body,
-  } );
+  });
 
   // console.log( uid );
 
@@ -37,17 +37,17 @@ const crearHospitales = async ( req, res = response ) => {
     
     const hospitalDB = await hospital.save();
 
-    res.json( {
+    res.json({
       ok: true,
       hospital: hospitalDB,
-    } );
+    });
   } catch ( error ) {
     console.error( error );
-    req.status( 500 ).json( {
+    req.status( 500 ).json({
       ok: false,
       msg: 'Oops... Ocurrio un error inesperado. Consulte con el administrador del sistema.',
-    } );
-  }
+    });
+  };
 };
 
 /**
@@ -69,11 +69,11 @@ const actualizarHospitales = async ( req, res = response ) => {
     const hospital = await Hospital.findById( id );
 
     if ( !hospital ) {
-      return res.status( 404 ).json( {
+      return res.status( 404 ).json({
         ok: false,
         msg: 'Hospital no encontrado por id.',
-      } );
-    }
+      });
+    };
 
     /**
      * Actualizar el registro del Hospital
@@ -88,19 +88,19 @@ const actualizarHospitales = async ( req, res = response ) => {
      */
     const hospitalUpdate = await Hospital.findByIdAndUpdate( id, hospitalChange, { new: true, } );
 
-    res.json( {
+    res.json({
       ok: true,
       msg: 'Hospital Actualizado correctamente!!!!',
       hospital: hospitalUpdate,
-    } );
-  } catch (error) {
+    });
+  } catch ( error ) {
     console.error( error );
 
-    res.status( 500 ).json( {
+    res.status( 500 ).json({
       ok: false,
       msg: 'Oops... Ocurrio un error inesperado.  Consulte con el Administrador del sistema.',
-    } );
-  }
+    });
+  };
 };
 
 /**
@@ -121,29 +121,29 @@ const borrarHospitales = async ( req, res = response ) => {
     const hospital = await Hospital.findById( id );
 
     if ( !hospital ) {
-      return res.status( 404 ).json( {
+      return res.status( 404 ).json({
         ok: false,
         msg: 'Hospital no encontrado por id.',
-      } );
-    }
+      });
+    };
 
     /**
      * Eliminar Hospital
      */
     await Hospital.findByIdAndDelete( id );
 
-    res.json( {
+    res.json({
       ok: true,
       msg: 'Hospital Eliminado correctamente.',
-    } );
-  } catch (error) {
+    });
+  } catch ( error ) {
     console.error( error );
 
-    res.status( 500 ).json( {
+    res.status( 500 ).json({
       ok: false,
       msg: 'Oops... Ocurrio un error inesperado.  Consulte con el Administrador del sistema.',
-    } );
+    });
   }
 };
 
-module.exports = { getHospitales, crearHospitales, actualizarHospitales, borrarHospitales, };
+export { getHospitales, crearHospitales, actualizarHospitales, borrarHospitales };

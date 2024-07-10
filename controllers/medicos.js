@@ -1,6 +1,6 @@
-const { response } = require( 'express' );
+import { response } from 'express';
 
-const Medico = require( '../models/medico' );
+import Medico from '../models/medico.js';
 
 /**
  * 
@@ -13,10 +13,10 @@ const getMedicos = async ( req, res = response ) => {
     .populate( 'usuario', 'name img' )
     .populate( 'hospital', 'name img' );
 
-  res.json( {
+  res.json({
     ok: true,
     medicos,
-  } );
+  });
 
 };
 
@@ -28,28 +28,26 @@ const getMedicos = async ( req, res = response ) => {
 const crearMedico = async ( req, res = response ) => { 
 
   const uid = req.uid;
-  const medico = new Medico( {
+  const medico = new Medico({
     usuario: uid,
     ...req.body,
-  } );
+  });
 
   try {
 
     const medicoDB = await medico.save();
     
-    res.json( {
+    res.json({
       ok: true,
       Medico: medicoDB,
-    } );
-  } catch (error) {
+    });
+  } catch ( error ) {
     console.error( error );
-    res.status( 500 ).json( {
+    res.status( 500 ).json({
       ok: false,
       msg: 'Oops... algo salio mal. Comuniquese con el administrador del sistema.',
-    } );
-  }
-
-  
+    });
+  };
 };
 
 /**
@@ -71,10 +69,10 @@ const actualizarMedico = async ( req, res = response ) => {
     const medico = await Medico.findById( id );
 
     if ( !medico ) {
-      return res.status( 404 ).json( {
+      return res.status( 404 ).json({
         ok: false,
         msg: 'Médico no encontrado por id.',
-      } );
+      });
     }
 
     /**
@@ -90,20 +88,19 @@ const actualizarMedico = async ( req, res = response ) => {
      */
     const medicoUpdate = await Medico.findByIdAndUpdate( id, medicoChange, { new: true, } );
 
-    res.json( {
+    res.json({
       ok: true,
       msg: 'Médico Actualizado correctamente!!!!',
       hospital: medicoUpdate,
-    } );
-  } catch (error) {
+    });
+  } catch ( error ) {
     console.error( error );
 
-    res.status( 500 ).json( {
+    res.status( 500 ).json({
       ok: false,
       msg: 'Oops... Ocurrio un error inesperado.  Consulte con el Administrador del sistema.',
-    } );
-  }
-
+    });
+  };
 };
 
 const borrarMedico = async ( req, res = response ) => { 
@@ -118,32 +115,31 @@ const borrarMedico = async ( req, res = response ) => {
     const medico = await Medico.findById( id );
 
     if ( !medico ) {
-      return res.status( 404 ).json( {
+      return res.status( 404 ).json({
         ok: false,
         msg: 'Médico no encontrado por id.',
-      } );
-    }
+      });
+    };
 
     /**
      * Eliminar Médico
      */
     await Medico.findByIdAndDelete( id );
 
-    res.json( {
+    res.json({
       ok: true,
       msg: 'Médico Eliminado correctamente.',
-    } );
+    });
   } catch (error) {
     console.error( error );
 
-    res.status( 500 ).json( {
+    res.status( 500 ).json({
       ok: false,
       msg: 'Oops... Ocurrio un error inesperado.  Consulte con el Administrador del sistema.',
-    } );
-  }
-  
+    });
+  };
 };
 
 
 
-module.exports = { getMedicos, crearMedico, actualizarMedico, borrarMedico, };
+export { getMedicos, crearMedico, actualizarMedico, borrarMedico };

@@ -3,13 +3,18 @@
  * Ruta: '/api/hospitales'
  */
 
-const { Router } = require( 'express' );
-const { check } = require( 'express-validator' );
-const { validarCampos } = require( '../middlewares/validar-campos' );
+import { Router } from 'express';
+import { check } from 'express-validator';
+import { validarCampos } from '../middlewares/validar-campos.js';
 
-const { getHospitales, crearHospitales, actualizarHospitales, borrarHospitales, } = require( '../controllers/hospitales' );
+import { 
+  getHospitales, 
+  crearHospitales, 
+  actualizarHospitales, 
+  borrarHospitales, 
+} from '../controllers/hospitales.js';
 
-const { validarJWT } = require( '../middlewares/validar-jwt' );
+import { validarJWT } from '../middlewares/validar-jwt.js';
 
 
 const router = Router();
@@ -48,4 +53,4 @@ router.delete( '/:id',
 );
 
 
-module.exports = router;
+export default router;

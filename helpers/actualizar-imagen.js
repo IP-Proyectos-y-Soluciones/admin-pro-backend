@@ -1,8 +1,8 @@
-const fs = require( "fs" );
+import fs from 'fs/promises';
 
-const Usuario = require( "../models/usuario" );
-const Medico = require( "../models/medico" );
-const Hospital = require( "../models/hospital" );
+import Usuario from '../models/usuario.js';
+import Medico from '../models/medico.js';
+import Hospital from '../models/hospital.js';
 
 const deleteImage = path => {
 	if ( fs.existsSync( path ) ) {
@@ -10,7 +10,7 @@ const deleteImage = path => {
       * Borrar la imagen anterior
       */
     fs.unlinkSync( path );
-	}
+	};
 };
 
 /**
@@ -31,7 +31,7 @@ const updateImage = async ( type, id, fileName ) => {
 			if ( !medico ) {
         console.log( "No es un médico por id" );
 				return false;
-			}
+			};
 
       oldPath = `./uploads/medicos/${ medico.img }`;
 			deleteImage( oldPath );
@@ -40,7 +40,6 @@ const updateImage = async ( type, id, fileName ) => {
 			await medico.save();
 			return true;
 
-			// @ts-ignore
 			break;
 
 		case "hospitales":
@@ -49,7 +48,7 @@ const updateImage = async ( type, id, fileName ) => {
 			if ( !hospital ) {
         console.log( "No es un hospital por id" );
 				return false;
-			}
+			};
 
       oldPath = `./uploads/hospitales/${ hospital.img }`;
       deleteImage( oldPath );
@@ -58,7 +57,6 @@ const updateImage = async ( type, id, fileName ) => {
 			await hospital.save();
       return true;
     
-			// @ts-ignore
 			break;
 
     case "usuarios":
@@ -67,7 +65,7 @@ const updateImage = async ( type, id, fileName ) => {
       if ( !usuario ) {
         console.log( 'No es un usuario por id' );
         return false;
-      }
+      };
 
       oldPath = `./uploads/usuarios/${ usuario.img }`;
       deleteImage( oldPath );
@@ -76,10 +74,9 @@ const updateImage = async ( type, id, fileName ) => {
       await usuario.save();
       return true;
     
-			// @ts-ignore
       break;
     
-	}
+	};
 };
 
-module.exports = { updateImage, };
+export { updateImage };

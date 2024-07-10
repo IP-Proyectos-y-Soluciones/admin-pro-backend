@@ -1,8 +1,7 @@
-const { Schema, model } = require( 'mongoose' );
+import { Schema, model } from 'mongoose';
 
 // Creación de Hospital
-// @ts-ignore
-const HospitalSchema = Schema( {
+const HospitalSchema = Schema({
   name: {
     type: String,
     required: true,
@@ -15,14 +14,12 @@ const HospitalSchema = Schema( {
     type: Schema.Types.ObjectId,
     ref: 'Usuario',
   },
-} );
+});
 
 
 HospitalSchema.method( 'toJSON', function () {
-
   const { __v, ...object } = this.toObject();
-
   return object;
-}, { collection: 'hospitales', } );
+});
 
-module.exports = model( 'Hospital', HospitalSchema );
+export default model( 'Hospital', HospitalSchema );

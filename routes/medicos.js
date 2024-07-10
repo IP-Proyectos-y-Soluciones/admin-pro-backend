@@ -3,13 +3,13 @@
  * Ruta: '/api/medicos'
  */
 
-const { Router } = require( 'express' );
-const { check } = require( 'express-validator' );
-const { validarCampos } = require( '../middlewares/validar-campos' );
+import { Router } from 'express';
+import { check } from 'express-validator';
+import { validarCampos } from '../middlewares/validar-campos.js';
 
-const { getMedicos, crearMedico, actualizarMedico, borrarMedico } = require( '../controllers/medicos' );
+import { getMedicos, crearMedico, actualizarMedico, borrarMedico } from '../controllers/medicos.js';
 
-const { validarJWT } = require( '../middlewares/validar-jwt' );
+import { validarJWT } from '../middlewares/validar-jwt.js';
 
 const router = Router();
 
@@ -43,6 +43,7 @@ router.put( '/:id',
 
 router.delete( '/:id',
   validarJWT,
-  borrarMedico );
+  borrarMedico 
+);
 
-module.exports = router;
+export default router;
