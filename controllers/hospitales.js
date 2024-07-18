@@ -143,7 +143,7 @@ const borrarHospitales = async ( req, res = response ) => {
       ok: false,
       msg: 'Oops... Ocurrio un error inesperado.  Consulte con el Administrador del sistema.',
     });
-  }
+  };
 };
 
 export { getHospitales, crearHospitales, actualizarHospitales, borrarHospitales };

@@ -27,7 +27,7 @@ const login = async ( req, res = response ) => {
         ok: false,
         msg: 'Email o contraseña no son válidos.',
       });
-    }
+    };
 
     /**
      * Verificar password
@@ -125,9 +125,22 @@ const renewToken = async ( req, res = response ) => {
    */
   const token = await generarJWT( uid );
 
+  /**
+   * Obtener el usuario por UID
+   */
+  const usuario = await Usuario.findById( uid );
+
+  if ( !usuario ) {
+    return res.status( 404 ).json({
+      ok: false,
+      msg: 'Usuario no encontrado.',
+    });
+  };
+
   res.json({
     ok: true,
     token,
+    usuario,
   });
 };
 

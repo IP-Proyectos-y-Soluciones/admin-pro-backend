@@ -1,4 +1,4 @@
-import fs from 'fs/promises';
+import fs from 'fs';
 
 import Usuario from '../models/usuario.js';
 import Medico from '../models/medico.js';
@@ -25,11 +25,11 @@ const updateImage = async ( type, id, fileName ) => {
   let oldPath = '';
 
 	switch ( type ) {
-		case "medicos":
+		case 'medicos':
       const medico = await Medico.findById( id );
 
 			if ( !medico ) {
-        console.log( "No es un médico por id" );
+        console.log( 'No es un médico por id' );
 				return false;
 			};
 
@@ -42,11 +42,11 @@ const updateImage = async ( type, id, fileName ) => {
 
 			break;
 
-		case "hospitales":
+		case 'hospitales':
       const hospital = await Hospital.findById( id );
 
 			if ( !hospital ) {
-        console.log( "No es un hospital por id" );
+        console.log( 'No es un hospital por id' );
 				return false;
 			};
 
@@ -59,7 +59,7 @@ const updateImage = async ( type, id, fileName ) => {
     
 			break;
 
-    case "usuarios":
+    case 'usuarios':
       const usuario = await Usuario.findById( id );
 
       if ( !usuario ) {

@@ -21,17 +21,17 @@ const app = express();
 /**
  * Configurar CORS
  */
-app.use( cors() );
+app.use( cors());
 
 /**
  * Carpeta publc
  */
-app.use( express.static( 'public' ) );
+app.use( express.static( 'public' ));
 
 /**
  * Lectura y parseo del Json
  */
-app.use( express.json() );
+app.use( express.json());
 
 /**
  * Conexion DB

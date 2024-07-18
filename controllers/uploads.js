@@ -4,6 +4,10 @@ import fs from 'fs';
 import { response } from 'express';
 import { v4 as uuidv4 } from 'uuid';
 import { updateImage } from '../helpers/actualizar-imagen.js';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath( import.meta.url );
+const __dirname = path.dirname( __filename );
 
 /**
  * 
@@ -92,7 +96,6 @@ const fileupload = ( req, res = response ) => {
     });
 
   });
-
 };
 
 /**
@@ -113,8 +116,8 @@ const returnImage = ( req, res = response ) => {
   if ( fs.existsSync( pathImg ) ) {
     res.sendFile( pathImg );
   } else {
-    const pathImg = path.join( __dirname, `../uploads/no-img.jpg` );
-    res.sendFile( pathImg );
+    const defaultPathImg = path.join( __dirname, `../uploads/no-img.jpg` );
+    res.sendFile( defaultPathImg );
   };
 };
 
