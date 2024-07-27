@@ -7,13 +7,13 @@ import { Router } from 'express';
 import { check } from 'express-validator';
 import { validarCampos } from '../middlewares/validar-campos.js';
 
-import { getMedicos, crearMedico, actualizarMedico, borrarMedico } from '../controllers/medicos.js';
+import { getMedicos, getMedicoById, crearMedico, actualizarMedico, borrarMedico } from '../controllers/medicos.js';
 
 import { validarJWT } from '../middlewares/validar-jwt.js';
 
 const router = Router();
 
-router.get( '/', getMedicos );
+router.get( '/',validarJWT, getMedicos );
 
 router.post( '/',
   [
@@ -44,6 +44,11 @@ router.put( '/:id',
 router.delete( '/:id',
   validarJWT,
   borrarMedico 
+);
+
+router.get( '/:id',
+  validarJWT,
+  getMedicoById 
 );
 
 export default router;
