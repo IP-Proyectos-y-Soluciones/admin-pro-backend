@@ -1,5 +1,13 @@
 import jwt from 'jsonwebtoken';
+import Usuario from '../models/usuario.js';
 
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ * @returns 
+ */
 const validarJWT = ( req, res, next ) => {
 
   // Leer el Token
@@ -32,4 +40,43 @@ const validarJWT = ( req, res, next ) => {
   };
 };
 
-export { validarJWT };
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ * @returns 
+ */
+const validarADMIN_ROLE = async( req, res, next ) => {
+
+  const uid = req.uid;
+
+  try {
+    const usuarioDB = await Usuario.findById( uid );
+
+    if ( !usuarioDB ) {
+      return res.status( 404 ).json({
+        ok: false,
+        msg: 'Usuario no existe.',
+      });
+    };
+
+    if ( usuarioDB.role !== 'ADMIN_ROLE' ) {
+      return res.status( 403 ).json({
+        ok: false,
+        msg: 'No tiene permisos para este acción.',
+      });
+    };
+
+    next();
+
+  } catch ( error ) {
+    console.log( error );
+    res.status( 500 ).json({
+      ok: false,
+      msg: 'Hable con el Administrador',
+    });
+  };
+};
+
+export { validarJWT, validarADMIN_ROLE };

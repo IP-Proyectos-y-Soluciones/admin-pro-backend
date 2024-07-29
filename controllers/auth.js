@@ -144,7 +144,7 @@ const renewToken = async ( req, res = response ) => {
     ok: true,
     token,
     usuario, 
-    menu: getMenuFrontEnd( usuarioDB.role ),
+    menu: getMenuFrontEnd( usuario.role ),
   });
 };
 
