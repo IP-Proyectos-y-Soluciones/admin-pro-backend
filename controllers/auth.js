@@ -4,6 +4,7 @@ import bcrypt from 'bcryptjs';
 import Usuario from '../models/usuario.js';
 import { generarJWT } from '../helpers/jwt.js';
 import { googleVerify } from '../helpers/google-verify.js';
+import { getMenuFrontEnd } from '../helpers/menu-frontend.js';
 
 /**
  * 
@@ -48,7 +49,8 @@ const login = async ( req, res = response ) => {
 
     res.json({
       ok: true,
-      token,
+      token, 
+      menu: getMenuFrontEnd( usuarioDB.role ),
     });
 
   } catch ( error ) {
@@ -99,7 +101,8 @@ const googleSignIn = async ( req, res = response ) => {
     res.json({
       ok: true,
       email, name, picture,
-      token,
+      token, 
+      menu: getMenuFrontEnd( usuario.role ),
     });
     
   } catch ( error ) {
@@ -140,7 +143,8 @@ const renewToken = async ( req, res = response ) => {
   res.json({
     ok: true,
     token,
-    usuario,
+    usuario, 
+    menu: getMenuFrontEnd( usuarioDB.role ),
   });
 };
 
