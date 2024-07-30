@@ -79,4 +79,40 @@ const validarADMIN_ROLE = async( req, res, next ) => {
   };
 };
 
-export { validarJWT, validarADMIN_ROLE };
+const validarADMIN_ROLE_o_SAME_USER = async( req, res, next ) => {
+
+  const uid = req.uid;
+  const id = req.params.id;
+
+  try {
+    const usuarioDB = await Usuario.findById( uid );
+
+    if ( !usuarioDB ) {
+      return res.status( 404 ).json({
+        ok: false,
+        msg: 'Usuario no existe.',
+      });
+    };
+
+    if ( usuarioDB.role === 'ADMIN_ROLE' || uid === id ) {
+
+      next();
+      
+    } else {
+      return res.status( 403 ).json({
+        ok: false,
+        msg: 'No tiene permisos para este acción.',
+      });
+    };
+
+
+  } catch ( error ) {
+    console.log( error );
+    res.status( 500 ).json({
+      ok: false,
+      msg: 'Hable con el Administrador',
+    });
+  };
+};
+
+export { validarJWT, validarADMIN_ROLE, validarADMIN_ROLE_o_SAME_USER };

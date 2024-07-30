@@ -7,7 +7,7 @@ import { check } from 'express-validator';
 import { validarCampos } from '../middlewares/validar-campos.js';
 
 import { getUsuarios, createUser, actualizarUsuario, borrarUsuario } from '../controllers/usuarios.js';
-import { validarADMIN_ROLE, validarJWT } from '../middlewares/validar-jwt.js';
+import { validarADMIN_ROLE, validarADMIN_ROLE_o_SAME_USER, validarJWT } from '../middlewares/validar-jwt.js';
 
 
 const router = Router();
@@ -29,7 +29,7 @@ router.put( '/:id',
   [
     // Validar campos que se van actualizar
     validarJWT,
-    validarADMIN_ROLE,
+    validarADMIN_ROLE_o_SAME_USER,
     check( 'name', 'El nombre es obligatorio' ).not().isEmpty(),
     check( 'email', 'El email es obligatorio' ).isEmail(),
     check( 'role', 'El role es obligatorio' ).not().isEmpty(),
